@@ -1,0 +1,530 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIGITAL AFTERLIFE // ARCHIVE</title>
+<style>
+:root {
+  --bg: #100e19;
+  --panel: #211a30;
+  --pink: #ff83cf;
+  --cyan: #82fff4;
+  --purple: #b89aff;
+  --text: #f4eaff;
+  --muted: #b9a9ce;
+  --border: #78628e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px 12px;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(#47335b 0.8px, transparent 0.8px);
+  background-size: 12px 12px;
+  color: var(--text);
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+}
+button, a { font: inherit; }
+a { color: var(--cyan); }
+a:hover { color: var(--pink); }
+button {
+  cursor: pointer;
+  color: var(--cyan);
+  background: #191426;
+  border: 1px solid var(--cyan);
+  padding: 9px 12px;
+}
+button:hover, button:focus-visible {
+  background: var(--cyan);
+  color: #171222;
+  outline: none;
+}
+button:focus-visible, a:focus-visible {
+  outline: 2px dashed var(--pink);
+  outline-offset: 3px;
+}
+.site {
+  max-width: 900px;
+  margin: auto;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  box-shadow: 0 0 28px #b56bff20;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  color: var(--cyan);
+  font-size: 12px;
+}
+.hero {
+  text-align: center;
+  padding: 38px 18px 28px;
+  background: linear-gradient(140deg, #281735, #11101c 70%);
+  border-bottom: 1px solid var(--border);
+}
+.hero .small {
+  color: var(--cyan);
+  letter-spacing: 3px;
+  font-size: 11px;
+}
+h1 {
+  color: var(--pink);
+  font-size: clamp(30px, 7vw, 57px);
+  line-height: 1.1;
+  margin: 18px 0 12px;
+  text-shadow: 3px 3px #7140a1;
+  overflow-wrap: anywhere;
+}
+.hero p { color: var(--muted); line-height: 1.7; }
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 9px;
+  color: var(--cyan);
+  border-bottom: 1px dashed var(--border);
+}
+.marquee span {
+  display: inline-block;
+  animation: crawl 18s linear infinite;
+}
+@keyframes crawl {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+.layout {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;
+}
+.panel {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  margin-bottom: 14px;
+  min-width: 0;
+}
+.panel-title {
+  padding: 9px 10px;
+  color: var(--cyan);
+  background: #30233f;
+  border-bottom: 1px solid var(--border);
+  font-weight: bold;
+}
+.panel-content { padding: 12px; line-height: 1.7; }
+.nav {
+  display: grid;
+  gap: 7px;
+}
+.nav button {
+  text-align: left;
+  border-color: var(--border);
+  color: var(--pink);
+}
+.nav button.active {
+  background: var(--pink);
+  color: #211426;
+  border-color: var(--pink);
+}
+.status { color: var(--cyan); font-size: 12px; }
+.blink { animation: blink 1s steps(2, start) infinite; }
+@keyframes blink { to { visibility: hidden; } }
+h2 { color: var(--pink); font-size: 21px; }
+h3 { color: var(--cyan); font-size: 15px; }
+.page { display: none; }
+.page.active { display: block; }
+.intro {
+  border: 1px dashed var(--border);
+  padding: 15px;
+  background: #171322;
+  line-height: 1.8;
+}
+.entry {
+  padding: 13px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.entry:last-child { border-bottom: 0; }
+.entry p { color: var(--muted); line-height: 1.7; }
+.entry button { width: 100%; text-align: left; }
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--pink);
+  line-height: 1.6;
+}
+.footer {
+  text-align: center;
+  padding: 18px 10px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 2;
+}
+#dialog {
+  width: min(520px, calc(100% - 28px));
+  background: var(--panel);
+  color: var(--text);
+  border: 2px solid var(--pink);
+  padding: 0;
+}
+#dialog::backdrop { background: #080611d9; }
+.dialog-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  background: #392541;
+  color: var(--pink);
+}
+.dialog-body { padding: 18px; line-height: 1.8; }
+.dialog-body button { margin-top: 10px; }
+#secret { display: none; }
+#secret.revealed { display: block; }
+footer a { color: var(--pink); }
+@media (max-width: 600px) {
+  body { padding: 8px 5px; font-size: 13px; }
+  .layout { grid-template-columns: 1fr; padding: 9px; }
+  .nav { grid-template-columns: 1fr 1fr; }
+  .hero { padding: 28px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="site">
+  <div class="topbar">
+    <span>◈ D/A NETWORK v.04</span>
+    <span id="clock">CONNECTION ESTABLISHED</span>
+  </div>
+
+  <header class="hero">
+    <div class="small">✦ AN UNOFFICIAL DIGITAL ARCHIVE ✦</div>
+    <h1>DIGITAL AFTERLIFE</h1>
+    <p>
+      Some things are better left offline.<br>
+      Unfortunately, you are already here.
+    </p>
+    <div class="status">● SYSTEM ONLINE <span class="blink">_</span></div>
+  </header>
+
+  <div class="marquee" aria-label="Announcement">
+    <span>
+      ★ WELCOME, VISITOR ★ DO NOT TRUST EVERY FILE ★
+      SOMETHING IS WRONG WITH THIS WEBSITE ★ WELCOME, VISITOR ★
+    </span>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <section class="panel">
+        <div class="panel-title">[ NAVIGATION ]</div>
+        <div class="panel-content nav">
+          <button class="active" data-page="home">01 / HOME</button>
+          <button data-page="archive">02 / ARCHIVE</button>
+          <button data-page="about">03 / ABOUT</button>
+          <button data-page="bonus">04 / BONUS</button>
+          <button data-page="unknown">??? / UNKNOWN</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">[ SYSTEM LOG ]</div>
+        <div class="panel-content">
+          <div class="status">STATUS: STABLE</div>
+          <p>Last update:<br>10.16.2004</p>
+          <p>Visitors: <span id="visits">001</span></p>
+          <p>Files recovered: 03</p>
+          <p>Threat level: ???</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">[ REMINDER ]</div>
+        <div class="panel-content">
+          Keep your volume low.<br>
+          Keep your eyes open.<br>
+          <span style="color:var(--pink)">Don't stay too long.</span>
+        </div>
+      </section>
+    </aside>
+
+    <main>
+      <section class="panel page active" id="home">
+        <div class="panel-title">HOME.EXE // WELCOME</div>
+        <div class="panel-content">
+          <h2>Welcome to the archive.</h2>
+          <div class="intro">
+            <p>
+              You weren't supposed to find this place.
+              Then again, nobody really finds it by accident.
+            </p>
+            <p>
+              This website is a collection of recovered files,
+              incomplete records, and things that no longer
+              have an explanation.
+            </p>
+            <p>Make yourself at home. For now.</p>
+          </div>
+          <h3>✦ RECENT TRANSMISSIONS</h3>
+          <div class="entry">
+            <span class="status">FILE 001 // RECOVERED</span>
+            <p>Someone left a message in the guestbook. It is dated tomorrow.</p>
+            <button data-open="message">READ TRANSMISSION →</button>
+          </div>
+          <div class="entry">
+            <span class="status">FILE 002 // CORRUPTED</span>
+            <p>A photograph with a person who was never there.</p>
+            <button data-open="photograph">INSPECT FILE →</button>
+          </div>
+          <div class="entry">
+            <span class="status">FILE 003 // RESTRICTED</span>
+            <p>The original owner left something behind.</p>
+            <button data-open="restricted">REQUEST ACCESS →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel page" id="archive">
+        <div class="panel-title">ARCHIVE.DAT // INDEX</div>
+        <div class="panel-content">
+          <h2>Recovered files</h2>
+          <p>Click any entry to inspect its contents.</p>
+          <div class="entry">
+            <button data-open="message">[TXT] guestbook_final.txt</button>
+            <p>Last modified: tomorrow, 03:33 AM</p>
+          </div>
+          <div class="entry">
+            <button data-open="photograph">[IMG] image_000.jpg</button>
+            <p>Warning: image metadata does not match its date.</p>
+          </div>
+          <div class="entry">
+            <button data-open="restricted">[???] owner_backup.dat</button>
+            <p>Access denied. Authorization required.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel page" id="about">
+        <div class="panel-title">ABOUT.TXT // INFORMATION</div>
+        <div class="panel-content">
+          <h2>About this website</h2>
+          <p>
+            DIGITAL AFTERLIFE is an independent fictional archive
+            documenting the remains of an unknown internet presence.
+          </p>
+          <p>
+            The archive was assembled from damaged backups,
+            anonymous messages, and fragments of an abandoned site.
+          </p>
+          <h3>ARCHIVE RULES</h3>
+          <ul>
+            <li>Do not delete the original files.</li>
+            <li>Do not reply to unknown messages.</li>
+            <li>Do not open files marked with three question marks.</li>
+          </ul>
+          <p style="color:var(--pink)">
+            The previous owner did not follow these rules.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel page" id="bonus">
+        <div class="panel-title">BONUS.ZIP // EXTRAS</div>
+        <div class="panel-content">
+          <h2>Bonus materials</h2>
+          <p>Additional fragments recovered from the server.</p>
+          <div class="entry">
+            <button data-open="diary">DIARY ENTRY #04</button>
+            <p>A note found in a temporary folder.</p>
+          </div>
+          <div class="entry">
+            <button data-open="guestbook">VISITOR GUESTBOOK</button>
+            <p>Messages left by previous visitors.</p>
+          </div>
+          <div class="entry">
+            <button data-open="terminal">OPEN TERMINAL</button>
+            <p>A tiny simulated command prompt.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel page" id="unknown">
+        <div class="panel-title">UNKNOWN.DAT // ???</div>
+        <div class="panel-content">
+          <h2>How did you get here?</h2>
+          <p>The requested page is not listed in the navigation.</p>
+          <p>There is a reason for that.</p>
+          <button id="unlock">ATTEMPT TO DECRYPT</button>
+          <div id="secret">
+            <pre>
+ACCESS GRANTED.
+-------------------------
+You have been here before.
+
+Look at the beginning.
+Look at the end.
+Look at what you ignored.
+
+The archive remembers.
+            </pre>
+            <p style="color:var(--pink)">
+              END OF TRANSMISSION.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    DIGITAL AFTERLIFE © 2004–????<br>
+    BEST VIEWED IN THE DARK · MADE OF HTML, CSS & DELUSION<br>
+    <a href="#" id="footer-secret">[ return to the beginning ]</a>
+  </footer>
+</div>
+
+<dialog id="dialog">
+  <div class="dialog-head">
+    <span id="dialog-title">FILE VIEWER</span>
+    <button id="close-dialog" aria-label="Close window">[ X ]</button>
+  </div>
+  <div class="dialog-body" id="dialog-body"></div>
+</dialog>
+
+<script>
+const pages = document.querySelectorAll(".page");
+const navButtons = document.querySelectorAll("[data-page]");
+const dialog = document.getElementById("dialog");
+const dialogTitle = document.getElementById("dialog-title");
+const dialogBody = document.getElementById("dialog-body");
+
+function showPage(id) {
+  pages.forEach(page => {
+    page.classList.toggle("active", page.id === id);
+  });
+  navButtons.forEach(button => {
+    button.classList.toggle("active", button.dataset.page === id);
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+navButtons.forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+const files = {
+  message: {
+    title: "guestbook_final.txt",
+    text: "Hello?\\n\\nIf anyone can read this, please tell me what happened to the website.\\n\\nI keep seeing a new page appear every night. It wasn't there yesterday.\\n\\nPlease stop adding my name to the guestbook.\\n\\n— a previous visitor"
+  },
+  photograph: {
+    title: "image_000.jpg",
+    text: "[ IMAGE PREVIEW UNAVAILABLE ]\\n\\nThe file is 0 bytes, but its metadata contains a description.\\n\\nDescription: A room with one window.\\n\\nNumber of people detected: 1\\n\\nNumber of people visible: 0"
+  },
+  restricted: {
+    title: "owner_backup.dat",
+    text: "ACCESS DENIED.\\n\\nThis file requires a decryption key.\\n\\nHint: Sometimes the most important things are hidden in plain sight.\\n\\nTry the UNKNOWN page."
+  },
+  diary: {
+    title: "diary_entry_04.txt",
+    text: "October 16.\\n\\nI deleted the website again. It came back.\\n\\nI changed the password. It came back.\\n\\nI unplugged the computer.\\n\\nThe monitor was still on."
+  },
+  guestbook: {
+    title: "guestbook.html",
+    text: "VISITOR 001: lovely website!!\\n\\nVISITOR 002: who is the person in the background?\\n\\nVISITOR 003: there is no background image.\\n\\nVISITOR 004: stop replying to me."
+  },
+  terminal: {
+    title: "terminal.exe",
+    text: "SIMULATED TERMINAL\\n\\nType 'help' to see available commands."
+  }
+};
+
+function openFile(key) {
+  const file = files[key];
+  if (!file) return;
+  dialogTitle.textContent = file.title;
+  dialogBody.replaceChildren();
+
+  const text = document.createElement("pre");
+  text.textContent = file.text.replace(/\\n/g, "\n");
+  dialogBody.append(text);
+
+  if (key === "terminal") {
+    const input = document.createElement("input");
+    input.placeholder = "Type a command...";
+    input.setAttribute("aria-label", "Terminal command");
+    input.style.cssText =
+      "width:100%;padding:10px;background:#100e19;color:#82fff4;border:1px solid #78628e;font:inherit";
+    const output = document.createElement("p");
+    output.style.color = "#ff83cf";
+    const run = document.createElement("button");
+    run.textContent = "EXECUTE";
+    run.addEventListener("click", () => {
+      const command = input.value.trim().toLowerCase();
+      const responses = {
+        help: "Commands: help, status, whoami, clear",
+        status: "Server status: ONLINE. Reality status: UNKNOWN.",
+        whoami: "VISITOR. Your identity is not stored.",
+        clear: ""
+      };
+      output.textContent = responses[command] ??
+        "COMMAND NOT RECOGNIZED.";
+      if (command === "clear") input.value = "";
+    });
+    input.addEventListener("keydown", event => {
+      if (event.key === "Enter") run.click();
+    });
+    dialogBody.append(input, run, output);
+    input.focus();
+  }
+
+  dialog.showModal();
+}
+
+document.querySelectorAll("[data-open]").forEach(button => {
+  button.addEventListener("click", () => openFile(button.dataset.open));
+});
+
+document.getElementById("close-dialog").addEventListener("click", () => {
+  dialog.close();
+});
+
+dialog.addEventListener("click", event => {
+  if (event.target === dialog) dialog.close();
+});
+
+document.getElementById("unlock").addEventListener("click", () => {
+  document.getElementById("secret").classList.add("revealed");
+  document.getElementById("unlock").textContent = "DECRYPTION COMPLETE";
+});
+
+document.getElementById("footer-secret").addEventListener("click", event => {
+  event.preventDefault();
+  showPage("home");
+});
+
+document.getElementById("clock").textContent =
+  "LOCAL TIME: " + new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+// This is a visual demo counter, not a real visitor counter.
+</script>
+</body>
+</html>
